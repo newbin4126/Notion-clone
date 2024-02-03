@@ -1,53 +1,67 @@
 "use client";
 
-import { useConvexAuth } from "convex/react";
-import { SignInButton, UserButton } from "@clerk/clerk-react";
-import Link from "next/link";
+import { useState } from "react";
+import { useMutation } from "convex/react";
+import { useParams } from "next/navigation";
 
-import { useScrollTop } from "@/hooks/use-scroll-top";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/spinner";
-import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { useCoverImage } from "@/hooks/use-cover-image";
+import { SingleImageDropzone } from "@/components/single-image-dropzone";
+import { useEdgeStore } from "@/lib/edgestore";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
-import { Logo } from "./logo";
+export const CoverImageModal = () => {
+    const params = useParams();
+    const update = useMutation(api.documents.update);
+    const coverImage = useCoverImage();
+    const { edgestore } = useEdgeStore();
 
-export const Navbar = () => {
-  const { isAuthenticated, isLoading } = useConvexAuth();
-  const scrolled = useScrollTop();
+    const [file, setFile] = useState<File>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  return (
-    <div
-      className={cn(
-        "z-50 bg-background dark:bg-[#1F1F1F] fixed top-0 flex items-center w-full p-6",
-        scrolled && "border-b shadow-sm"
-      )}
-    >
-      <Logo />
-      <div className="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2">
-        {isLoading && <Spinner />}
-        {!isAuthenticated && !isLoading && (
-          <>
-            <SignInButton mode="modal">
-              <Button variant="ghost" size="sm">
-                Log in
-              </Button>
-            </SignInButton>
-            <SignInButton mode="modal">
-              <Button size="sm">Get Jotion free</Button>
-            </SignInButton>
-          </>
-        )}
-        {isAuthenticated && !isLoading && (
-          <>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/documents">Enter Jotion</Link>
-            </Button>
-            <UserButton afterSignOutUrl="/" />
-          </>
-        )}
-        <ModeToggle />
-      </div>
-    </div>
-  );
+    const onClose = () => {
+        setFile(undefined);
+        setIsSubmitting(false);
+        coverImage.onClose();
+    };
+
+    const onChange = async (file?: File) => {
+        if (file) {
+            setIsSubmitting(true);
+            setFile(file);
+
+            const res = await edgestore.publicFiles.upload({
+                file,
+                options: {
+                    replaceTargetUrl: coverImage.url,
+                },
+            });
+
+            await update({
+                id: params.documentId as Id<"documents">,
+                coverImage: res.url,
+            });
+
+            onClose();
+        }
+    };
+
+    return (
+        <Dialog open={coverImage.isOpen} onOpenChange={coverImage.onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <h2 className="text-center text-lg font-semibold">
+                        Cover Image
+                    </h2>
+                </DialogHeader>
+                <SingleImageDropzone
+                    className="w-full outline-none"
+                    disabled={isSubmitting}
+                    value={file}
+                    onChange={onChange}
+                />
+            </DialogContent>
+        </Dialog>
+    );
 };

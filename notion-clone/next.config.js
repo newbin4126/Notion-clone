@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ["file.adgestore.dev"],
+        domains: ["files.edgestore.dev"],
     },
 };
 

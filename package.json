@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@edgestore/react": "^0.1.6",
-    "@edgestore/server": "^0.1.6",
-    "convex": "^1.8.0",
-    "zod": "^3.22.4"
-  }
-}
