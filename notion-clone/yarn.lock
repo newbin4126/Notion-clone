@@ -781,7 +781,7 @@
   dependencies:
     csstype "3.1.1"
 
-"@edgestore/react@^0.1.4":
+"@edgestore/react@^0.1.6":
   version "0.1.6"
   resolved "https://registry.npmjs.org/@edgestore/react/-/react-0.1.6.tgz#ddc8b5e04ebc37ecb0c79a2ec46a5f4320dc0a13"
   integrity sha512-W7n5cAK/ChT5BHR35QI5j48e+xKrfnebyUEPJU83SMRLCOXu33n+JkzQgEuZgzUkRY8wsHooXfxGuGnIq1JjPg==
@@ -794,7 +794,7 @@
     jose "^4.13.1"
     uuid "^9.0.0"
 
-"@edgestore/server@^0.1.4":
+"@edgestore/server@^0.1.6":
   version "0.1.6"
   resolved "https://registry.npmjs.org/@edgestore/server/-/server-0.1.6.tgz#d2523a4b42dd4ec62ac939d8bb2cd497cef64cc3"
   integrity sha512-HugdT2ibEhYXfyFp1cVK0rlUus0QT77sgIRidGntxalZv8K524AOG1ZfJV9+HPUV8/I015uTvGL69kZRs0h8aA==
@@ -6643,7 +6643,7 @@ yocto-queue@^0.1.0:
 
 zod@^3.22.4:
   version "3.22.4"
-  resolved "https://registry.npmjs.org/zod/-/zod-3.22.4.tgz"
+  resolved "https://registry.npmjs.org/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
   integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
 
 zustand@^4.4.3:
